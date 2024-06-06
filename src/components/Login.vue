@@ -1,3 +1,9 @@
+<script>
+export default {
+  name: 'Login'
+}
+</script>
+
 <template>
   <div class="container">
     <div class="logo" style="position: relative; display: flex; flex-direction: column">
@@ -17,23 +23,7 @@
       <button type="submit">Next</button>
     </div>
   </div>
-  <!-- <div class="footer">
-      <select>
-        <option>English (United States)</option>
-      </select>
-      <div class="links">
-        <a href="#">Help</a>
-        <a href="#">Privacy</a>
-        <a href="#">Terms</a>
-      </div>
-    </div> -->
 </template>
-
-<script>
-export default {
-  name: 'Login'
-}
-</script>
 
 <style>
 body {
