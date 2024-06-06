@@ -1,4 +1,6 @@
 <script>
+import { RouterLink } from 'vue-router'
+
 export default {
   data: () => ({
     valid: false,
@@ -22,7 +24,7 @@ export default {
       (v) => !!v || 'Password is required',
       (v) =>
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(v) ||
-        'Use 8 or more characters with a mix of letters, numbers, and symbols.'
+        'Use 8 or more characters, numbers & symbols'
     ],
     confirmPassword: '',
     confirmPasswordRules: [(v) => v === this.password || 'Password did not match.'],
@@ -33,6 +35,7 @@ export default {
     validate() {
       if (this.$refs.form.validate()) {
         alert('Form is valid')
+        console.log(fname, lname, this.email, this.password)
       } else {
         alert('Form is invalid')
       }
@@ -47,7 +50,11 @@ export default {
 <template>
   <div>
     <v-card class="mx-auto" width="900px">
-      <img style="width: 60px; margin: 20px" src="../assets/google.png" alt="img" />
+      <img
+        style="width: 60px; margin: 20px; position: relative; left: 5px"
+        src="../assets/google.png"
+        alt="img"
+      />
       <label style="font-size: 25px; margin: 20px; position: relative; left: -100px">
         Create your Google Account
       </label>
@@ -111,21 +118,24 @@ export default {
                   @click:append="showPasswords = !showPasswords"
                 ></v-text-field>
               </div>
-              <br />
-              <v-spacer></v-spacer>
-              <v-spacer></v-spacer>
+
               <v-card-actions>
                 <div class="actions">
-                  <v-btn
-                    variant="plain"
-                    style="color: rgb(41, 85, 217); position: absolute; left: 50px"
+                  <RouterLink
+                    to="/login"
+                    style="
+                      color: rgb(41, 85, 217);
+                      position: absolute;
+                      left: 30px;
+                      font-weight: 500;
+                    "
                   >
                     Sign in instead
-                  </v-btn>
+                  </RouterLink>
                   <v-spacer></v-spacer>
                   <v-btn
                     @click="validate()"
-                    style="background-color: rgb(41, 85, 217); margin-left: 150px"
+                    style="background-color: rgb(41, 85, 217); position: absolute; left: 300px"
                   >
                     <label style="color: white">Sign Up</label>
                   </v-btn>
@@ -155,11 +165,16 @@ export default {
 
 .actions {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
 }
 
 .password {
   display: flex;
   justify-content: space-around;
+}
+
+button,
+a {
+  cursor: pointer;
 }
 </style>

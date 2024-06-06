@@ -1,136 +1,87 @@
 <script>
 export default {
-  name: 'Login'
+  name: 'Login',
+  data: () => ({
+    visible: false,
+    email:'',
+    password:'',
+    emailRules:[
+      (v) => !!v || 'Email required',
+    ],
+    passwordRules:[
+      (v)=> !!v || 'Password required'
+    ]
+  })
 }
 </script>
 
 <template>
-  <div class="container">
-    <div class="logo" style="position: relative; display: flex; flex-direction: column">
-      <img src="/src/assets/Google__G__logo.svg.png" alt="Google Logo" />
-      <div>
-        <h1>
-          Create a Google <br />
-          Account
-        </h1>
-        <p>Enter your name</p>
-      </div>
-    </div>
+  <div style="display: flex;justify-content: center;width: 100%;">
 
-    <div>
-      <input type="text" name="first_name" placeholder="First name" required /><br />
-      <input type="text" name="last_name" placeholder="Last name (optional)" /><br />
-      <button type="submit">Next</button>
+
+    <v-card class="mx-auto pa-12 pb-8" elevation="8" width="600px" rounded="lg">
+      <div class="" style="width: 60px;height: 30px;">
+      <img class="mx-auto my-6" width="100px" style="position: absolute;top: 10px;left: 250px;"  src="../assets/google.png"></img>
     </div>
+    <div style="font-size: 30px;margin-bottom: 20px">Log In</div>
+      <div class="text-subtitle-1 text-medium-emphasis">Email</div>
+
+      <v-text-field
+        density="compact"
+        placeholder="Email address"
+        :rules="emailRules"
+        prepend-inner-icon="mdi-email-outline"
+        variant="outlined"
+      ></v-text-field>
+
+      <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
+        Password
+
+
+      </div>
+
+      <v-text-field
+        :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+        :type="visible ? 'text' : 'password'"
+        density="compact"
+        placeholder="Enter your password"
+        :rules="passwordRules"
+        prepend-inner-icon="mdi-lock-outline"
+        variant="outlined"
+
+        @click:append-inner="visible = !visible"
+      ></v-text-field>
+      <div>
+        <a
+          class="text-caption text-decoration-none text-blue"
+          href="#"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Forgot login password?</a
+        >
+      </div><br><br>
+      <div>
+        <v-btn class="btn-login" size="large" style="position: relative;left: -5px;background-color: rgb(66, 96, 245);" variant="tonal" block> Log In </v-btn>
+      </div>
+      
+
+      <v-card-text class="text-center">
+        <RouterLink
+          class="text-blue text-decoration-none"
+          
+          to="/signup"
+        >
+          Create New Account <v-icon icon="mdi-chevron-right"></v-icon>
+        </RouterLink>
+      </v-card-text>
+    </v-card>
   </div>
 </template>
 
-<style>
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-}
-
-.container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: white;
-  padding: 20px 40px;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  width: 900px;
-  height: 350px;
-}
-
-.logo img {
-  width: 50px;
-  position: relative;
-  /* left: 30px; */
-  /* height: 30px; */
-}
-
-h1 {
-  font-size: 40px;
-  color: #202124;
-  margin-bottom: 10px;
-}
-
-p {
-  font-size: 14px;
-  color: #5f6368;
-  margin-bottom: 20px;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-input {
-  width: 400px;
-  height: 40px;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #dadce0;
-  border-radius: 4px;
-  font-size: 16px;
-}
-
-button {
-  background-color: #1a73e8;
+<style scoped>
+.v-btn.btn-login{
   color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  position: relative;
-  left: 150px;
 }
 
-button:hover {
-  background-color: #1558b0;
-}
-
-.footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
-  font-size: 12px;
-  color: #5f6368;
-  position: relative;
-  top: 300px;
-  /* right: 200px; */
-}
-
-.footer select {
-  border: none;
-  background: transparent;
-  font-size: 12px;
-  color: #5f6368;
-  cursor: pointer;
-}
-
-.footer .links {
-  display: flex;
-  gap: 10px;
-}
-
-.footer .links a {
-  color: #1a73e8;
-  text-decoration: none;
-}
-
-.footer .links a:hover {
-  text-decoration: underline;
-}
 </style>
