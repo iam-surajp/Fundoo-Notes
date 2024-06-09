@@ -143,7 +143,9 @@ export default {
                 </div>
 
                 <div>
-                  <v-btn class="btn-signup" @click="submitForm()"> Sign Up </v-btn>
+                  <v-btn class="btn-signup" @click="submitForm()" :disabled="!valid">
+                    Sign Up
+                  </v-btn>
                 </div>
               </div>
               <br />

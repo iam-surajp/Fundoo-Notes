@@ -75,7 +75,7 @@ export default {
         </div>
 
         <div>
-          <v-btn class="btn-login" size="large" @click="validate" variant="tonal"> Log In </v-btn>
+          <v-btn class="btn-login" size="large" @click="validate" variant="tonal" :disabled="!valid"> Log In </v-btn>
         </div>
       </div>
       <br><br>
