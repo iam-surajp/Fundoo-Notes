@@ -2,8 +2,9 @@
 import {loginUser} from '../services/UserServices'
 export default {
   name: 'Login',
-  valid:false,
+  
   data: () => ({
+    valid:false,
     visible: false,
     email:'',
     password:'',
@@ -13,7 +14,12 @@ export default {
     passwordRules:[
       (v)=> !!v || 'Password required'
     ],
-    showPasswords:false
+    showPasswords:false,
+    snackbar: {
+      show: false,
+      message: '',
+      timeout: 3000
+    }
   }),
   methods:{
    async validate(){
@@ -22,10 +28,26 @@ export default {
           'email':this.email,
           'password':this.password
         }
-        const response = await loginUser(reqData);
-        return response
-          // console.log('User logged in successfully', response);
-          // alert('Login successful');
+        loginUser(reqData)
+        .then(response => {
+            if (response && response.status >= 200 && response.status < 300) {
+              this.snackbar.message = 'Login successfull!'
+              this.snackbar.color = 'success'
+              this.snackbar.show = true
+              console.log(response.data); 
+            } else {
+              this.snackbar.message = 'Login failed'
+              this.snackbar.color = 'error'
+              this.snackbar.show = true
+              console.error(response);
+            }
+          })
+          .catch(error => {
+            this.snackbar.message = "There's some error, please try again later"
+            this.snackbar.color = 'error'
+            this.snackbar.show = true
+            console.error(error);
+          });
        }
     } 
 }
@@ -36,9 +58,9 @@ export default {
   <div class="parent-div">
 
     <v-form  v-model="valid">
-    <v-card class="mx-auto pa-12 pb-8" elevation="8" width="600px" rounded="lg">
-      <div style="width: 60px;height: 30px;">
-      <img class="mx-auto my-6" width="100px" style="position: absolute;top: 10px;left: 250px;"  src="../assets/google.png"></img>
+    <v-card class="mx-auto pa-10 pb-4" elevation="8" width="600px" rounded="lg">
+      <div style="width: 100%;height: 30px;text-align: center">
+      <img width="100px" src="../assets/google.png"></img>
     </div>
     <div style="font-size: 30px;margin-bottom: 20px">Sign In</div>
      
@@ -81,6 +103,10 @@ export default {
       <br><br>
     </v-card>
   </v-form>
+      <!-- Snackbar -->
+      <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout" :color="snackbar.color">
+      {{ snackbar.message }}
+    </v-snackbar>
   </div>
 </template>
 
@@ -96,8 +122,6 @@ export default {
 
 .v-btn.btn-login{
   color: white;
-  position: relative;
-  left: -5px;
   background-color: rgb(41, 85, 217);
 }
 

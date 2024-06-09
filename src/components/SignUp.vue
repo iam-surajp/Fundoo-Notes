@@ -1,5 +1,6 @@
 <script>
 import { RouterLink } from 'vue-router'
+import { signupUser } from '../services/UserServices'
 
 export default {
   data: () => ({
@@ -28,7 +29,12 @@ export default {
     ],
     confirmPassword: '',
     confirmPasswordRules: [(v) => !!v || 'Confirm password is required'],
-    showPasswords: false
+    showPasswords: false,
+    snackbar: {
+      show: false,
+      message: '',
+      timeout: 3000
+    }
   }),
 
   methods: {
@@ -41,14 +47,38 @@ export default {
         this.confirmPassword !== ''
       ) {
         if (this.password != this.confirmPassword) {
-          alert('Passwords did not match')
+          this.snackbar.message = 'Passwords did not match'
+          this.snackbar.color = 'error'
+          this.snackbar.show = true
         } else if (this.valid) {
-          alert('Form submitted')
-        } else {
-          alert('Enter valid fields')
+          const reqData = {
+            firstName: this.fname,
+            lastName: this.lname,
+            email: this.email,
+            password: this.password
+          }
+
+          signupUser(reqData)
+            .then((response) => {
+              if (response && response.status >= 200 && response.status < 300) {
+                this.snackbar.message = 'Form submitted successfully'
+                this.snackbar.color = 'success'
+                this.snackbar.show = true
+                console.log(response.data)
+              } else {
+                this.snackbar.message = 'Form submission failed'
+                this.snackbar.color = 'error'
+                this.snackbar.show = true
+                console.error(response)
+              }
+            })
+            .catch((error) => {
+              this.snackbar.message = "There's some issue, please try again later."
+              this.snackbar.color = 'error'
+              this.snackbar.show = true
+              console.error(error)
+            })
         }
-      } else {
-        console.log('first')
       }
     },
     reset() {
@@ -158,6 +188,10 @@ export default {
         </div>
       </div>
     </v-card>
+    <!-- Snackbar -->
+    <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout" :color="snackbar.color">
+      {{ snackbar.message }}
+    </v-snackbar>
   </div>
 </template>
 
@@ -174,7 +208,6 @@ export default {
 
 .custom-class {
   margin-right: 10px;
-  /* margin-bottom: 15px; */
 }
 
 .actions {
