@@ -1,18 +1,34 @@
 <script>
 export default {
-  data() {
-    return {
-      email: '',
-    };
-  },
-  computed: {
-    isFormValid() {
-      if (this.email!==''){
-        return true
-      }else{
-        return false
-      }
+  data: () => ({
+    valid:false,   
+    email: '',
+    emailRules: [
+    (v) => !!v || 'E-mail is required',
+    (v) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(v) || 'Must be a valid e-mail'
+    ],
+    snackbar: {
+      show: false,
+      message: '',
+      timeout: 3000
     }
+  }),
+
+  methods: {
+    validateForm() {
+      this.valid = this.emailRules.every((rule) => rule(this.email) === true);
+    },
+    submitForm() {
+      if (this.valid) {
+        this.snackbar.message = "The password reset link has been sent to your registered email."
+        this.snackbar.color = 'primary'
+        this.snackbar.show = true
+      } else {
+        this.snackbar.message = 'Some error occured'
+        this.snackbar.color = 'error'
+        this.snackbar.show = true
+      }
+    },
   },
 };
 </script>
@@ -34,6 +50,8 @@ export default {
             label="Email or phone"
             variant="outlined"    
             v-model="email" 
+            :rules="emailRules"
+            @input="validateForm"
             ></v-text-field>
         </div>        
 
@@ -53,12 +71,17 @@ export default {
           </div>
   
           <div>
-            <v-btn class="btn-next" size="large" @click="" variant="tonal" :disabled="!isFormValid"> Next </v-btn>
+            <v-btn class="btn-next" size="large" @click="submitForm" variant="tonal" :disabled="!valid"> Next </v-btn>
           </div>
         </div>
         <br>
       </v-card>
     </div>
+          <!-- Snackbar -->
+          
+          <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout" :color="snackbar.color">
+      {{ snackbar.message }}
+    </v-snackbar>
   </template>
 
 <style>

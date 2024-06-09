@@ -1,15 +1,44 @@
 <script>
 export default {
-  data() {
-    return {
-      newPassword: '',
-      confirmNewPassword: ''
-    };
-  },
+  data: () => ({
+    valid: false,
+    password: '',
+    passwordRules: [
+      (v) => !!v || 'Password is required',
+      (v) =>
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(v) ||
+        'Use 8 or more characters, numbers & symbols',
+    ],
+    confirmPassword: '',
+    confirmPasswordRules: [
+      (v) => !!v || 'Confirm password is required'
+    ],
+    showPasswords: false,
+    snackbar: {
+      show: false,
+      message: '',
+      color: '',
+      timeout: 3000,
+    },
+  }),
   computed: {
     isFormValid() {
-      return this.newPassword && this.confirmNewPassword;
-    }
+      return this.passwordRules.every((rule) => rule(this.password) === true) &&
+             this.confirmPasswordRules.every((rule) => rule(this.confirmPassword) === true);
+    },
+  },
+  methods: {
+    submitForm() {
+      if (this.password != this.confirmPassword) {
+          this.snackbar.message = 'Passwords did not match'
+          this.snackbar.color = 'error'
+          this.snackbar.show = true
+        } else{
+          this.snackbar.message = 'Password changed successfully!'
+          this.snackbar.color = 'success'
+          this.snackbar.show = true
+        }
+    },
   },
 };
 </script>
@@ -29,26 +58,32 @@ export default {
             <v-text-field 
             label="New Password"
             variant="outlined" 
-            v-model="newPassword"    
+            v-model="password"  
+            :rules="passwordRules"  
             ></v-text-field>
-        </div>     
+        </div>     <br>
         <div class="text-field">
             <v-text-field 
             label="Confirm New Password"
             variant="outlined"   
-            v-model="confirmNewPassword"  
+            v-model="confirmPassword"  
+            :rules="confirmPasswordRules"
             ></v-text-field>
         </div>    
 
          <br>
         
           <div style="text-align: end">
-            <v-btn class="btn-next" size="large" @click="" variant="tonal" :disabled="!isFormValid"> Reset password </v-btn>
+            <v-btn class="btn-next" size="large" @click="submitForm" variant="tonal" :disabled="!isFormValid"> Reset password </v-btn>
           </div>
        
         <br>
       </v-card>
     </div>
+      <!-- Snackbar -->
+      <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout" :color="snackbar.color">
+      {{ snackbar.message }}
+    </v-snackbar>
   </template>
 
 <style>
