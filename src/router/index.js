@@ -3,6 +3,7 @@ import Signup from '../views/SignupView.vue'
 import Login from '@/components/Login.vue'
 import resetPassword from '@/components/resetPassword.vue'
 import forgotPassword from '@/components/forgotPassword.vue'
+import dashboard from '@/components/dashboard.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,6 +30,12 @@ const router = createRouter({
       path: '/forgotpassword',
       name: 'forgotpassword',
       component: forgotPassword
+    },
+
+    {
+      path: '/home',
+      name: 'home',
+      component: dashboard
     },
 
     {
