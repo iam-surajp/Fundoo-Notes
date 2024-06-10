@@ -39,6 +39,7 @@ export default {
               this.snackbar.message = 'Login failed'
               this.snackbar.color = 'error'
               this.snackbar.show = true
+              console.log('This is status====->',response.status)
               console.error(response);
             }
           })
@@ -59,7 +60,7 @@ export default {
 
     <v-form  v-model="valid">
     <v-card class="mx-auto pa-10 pb-4" elevation="8" width="600px" rounded="lg">
-      <div style="width: 100%;height: 30px;text-align: center">
+      <div id="google-img">
       <img width="100px" src="../assets/google.png"></img>
     </div>
     <div style="font-size: 30px;margin-bottom: 20px">Sign In</div>
@@ -120,9 +121,16 @@ export default {
   left: 300px;
 }
 
+#google-img{
+  width: 100%;
+  height: 30px;
+  text-align: center;
+}
+
 .v-btn.btn-login{
   color: white;
   background-color: rgb(41, 85, 217);
+  text-transform: capitalize;
 }
 
 .password{
@@ -138,5 +146,15 @@ export default {
 .forgot-pass{
   color: rgb(41, 85, 217);
 }
+
+@media screen and (max-width:600px){
+  .parent-div{
+    width: fit-content;
+    left: 0;
+  }
+
+
+}
+
 
 </style>

@@ -54,6 +54,7 @@ export default {
           const reqData = {
             firstName: this.fname,
             lastName: this.lname,
+            service: 'advance',
             email: this.email,
             password: this.password
           }
@@ -61,12 +62,12 @@ export default {
           signupUser(reqData)
             .then((response) => {
               if (response && response.status >= 200 && response.status < 300) {
-                this.snackbar.message = 'Form submitted successfully'
+                this.snackbar.message = 'User registered successfully!'
                 this.snackbar.color = 'success'
                 this.snackbar.show = true
                 console.log(response.data)
               } else {
-                this.snackbar.message = 'Form submission failed'
+                this.snackbar.message = 'User registration failed'
                 this.snackbar.color = 'error'
                 this.snackbar.show = true
                 console.error(response)
@@ -234,6 +235,7 @@ a {
 .v-btn.btn-signup {
   color: white;
   background-color: rgb(41, 85, 217);
+  text-transform: capitalize;
 }
 
 @media only screen and (max-width: 600px) {

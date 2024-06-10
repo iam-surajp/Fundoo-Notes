@@ -6,8 +6,11 @@ export const loginUser = (reqData) => {
   }
   return post('user/login', reqData, headerOptions)
     .then((response) => {
-      console.log('Login successful', response.data)
-      return response.data
+      console.log('Login successful', response)
+      const loginToken = response.data.id
+      localStorage.setItem('token', loginToken)
+      console.log(`This is login token ========> ${loginToken}`)
+      return response
     })
     .catch((error) => {
       console.error('Login failed', error.message)
@@ -19,7 +22,7 @@ export const signupUser = (reqData) => {
   const headerOptions = {
     'Content-Type': 'application/json'
   }
-  return post('user/signup', reqData, headerOptions)
+  return post('user/userSignUp', reqData, headerOptions)
     .then((response) => {
       console.log('Signup successful', response)
       return response

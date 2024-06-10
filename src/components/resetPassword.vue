@@ -108,5 +108,6 @@ export default {
 .v-btn.btn-next{
   background-color: rgb(41, 85, 217);
   color: white;
+  text-transform: capitalize;
 }
 </style>
