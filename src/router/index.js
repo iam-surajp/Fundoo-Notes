@@ -4,6 +4,7 @@ import Login from '@/components/Login.vue'
 import resetPassword from '@/components/resetPassword.vue'
 import forgotPassword from '@/components/forgotPassword.vue'
 import dashboard from '@/components/dashboard.vue'
+import createNote from '@/components/createNote.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,6 +37,12 @@ const router = createRouter({
       path: '/home',
       name: 'home',
       component: dashboard
+    },
+
+    {
+      path: '/createnote',
+      name: 'createnote',
+      component: createNote
     },
 
     {

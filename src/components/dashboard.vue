@@ -1,6 +1,10 @@
 <script>
+import createNote from './createNote.vue'
+
 export default {
   name: 'dashboard',
+  components: { createNote },
+
   data: () => ({
     drawer: true,
     openRail: true,
@@ -35,6 +39,19 @@ export default {
       <v-app-bar-nav-icon variant="text" @click="onClick"></v-app-bar-nav-icon>
       <img src="../assets/keep.png" alt="" />
       <v-toolbar-title>Keep</v-toolbar-title>
+
+      <v-card-text class="search">
+        <v-text-field
+          :loading="loading"
+          prepend-inner-icon="mdi-magnify"
+          density="compact"
+          label="Search"
+          variant="solo"
+          hide-details
+          single-line
+          @click:append-inner="onClick"
+        ></v-text-field>
+      </v-card-text>
 
       <v-spacer></v-spacer>
 
@@ -73,62 +90,24 @@ export default {
       </v-list>
     </v-navigation-drawer>
   </v-layout>
-  <div class="center-content" style="">
-    <div>
-      <v-card class="create-card" width="600px" height="auto">
-        <v-text-field
-          class="abc"
-          placeholder="Title"
-          variant="plain"
-          v-if="clicked"
-          v-slot:append-inner=""
-        >
-          <v-btn variant="text"><v-icon>mdi-pin-outline</v-icon></v-btn>
-        </v-text-field>
-        <v-text-field
-          placeholder="Take a note..."
-          :placeholder="'Take a note...'"
-          @click="clicked = true"
-          variant="plain"
-          v-show="true"
-          v-slot:append-inner
-        >
-          <v-btn variant="text"><v-icon>mdi-clipboard-check-outline</v-icon></v-btn>
-          <v-btn variant="text"><v-icon>mdi-brush</v-icon></v-btn>
-          <v-btn variant="text"><v-icon>mdi-image-outline</v-icon></v-btn>
-        </v-text-field>
-        <template v-if="clicked">
-          <div style="display: flex; justify-content: space-between">
-            <div>
-              <v-btn variant="text"><v-icon>mdi-bell-outline</v-icon></v-btn>
-              <v-btn variant="text"><v-icon>mdi-account-plus-outline</v-icon></v-btn>
-              <v-btn variant="text"><v-icon>mdi-palette</v-icon></v-btn>
-              <v-btn variant="text"><v-icon>mdi-image-outline</v-icon></v-btn>
-              <v-btn variant="text"><v-icon>mdi-archive-arrow-down-outline</v-icon></v-btn>
-              <v-btn variant="text"><v-icon>mdi-dots-vertical</v-icon></v-btn>
-            </div>
-            <div><v-btn class="close-btn" variant="text">Close</v-btn></div>
-          </div>
-        </template>
-      </v-card>
-    </div>
-  </div>
-  <div class="text-content" height="600px" width="100%">
-    <div>
+
+  <div><createNote /></div>
+  <div class="text-content" width="100%">
+    <div class="txt-card">
       <p>
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iusto exercitationem reiciendis
         aspernatur nesciunt sed expedita molestiae totam facere possimus quisquam adipisci, illum
         obcaecati ex, deserunt natus nam incidunt numquam suscipit?
       </p>
     </div>
-    <div>
+    <div class="txt-card">
       <p>
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iusto exercitationem reiciendis
         aspernatur nesciunt sed expedita molestiae totam facere possimus quisquam adipisci, illum
         obcaecati ex, deserunt natus nam incidunt numquam suscipit?
       </p>
     </div>
-    <div>
+    <div class="txt-card">
       <p>
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iusto exercitationem reiciendis
         aspernatur nesciunt sed expedita molestiae totam facere possimus quisquam adipisci, illum
@@ -139,28 +118,28 @@ export default {
 </template>
 
 <style>
+/* display notes */
+.displayAll {
+  height: 600px;
+  width: 100%;
+  /* display: flex;
+  flex-direction: column; */
+  overflow-y: scroll;
+}
+
+.text-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.txt-card {
+  border: 1px solid black;
+  padding: 10px;
+}
+
 * {
   margin: 0;
   padding: 0;
-}
-
-.center-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: relative;
-  width: 100vh;
-  right: 250px;
-  bottom: 70px;
-  text-align: center;
-}
-
-.v-card.create-card {
-  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
-  padding-left: 10px;
-  /* position: relative;
-  right: 250px;
-  bottom: 100px; */
 }
 
 .v-btn.close-btn {
@@ -171,16 +150,16 @@ export default {
   cursor: pointer;
 }
 
-.v-text-field.abc::placeholder {
-  display: flex;
-}
-
 .v-list-item:hover {
   background-color: #dad8d8;
 }
 
 .v-btn.btn {
-  /* background: none; */
   background-color: transparent;
+}
+
+.v-card-text.search {
+  width: 30%;
+  /* height: 10px; */
 }
 </style>
