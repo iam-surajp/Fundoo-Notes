@@ -5,6 +5,7 @@ import resetPassword from '@/components/resetPassword.vue'
 import forgotPassword from '@/components/forgotPassword.vue'
 import dashboard from '@/components/dashboard.vue'
 import createNote from '@/components/createNote.vue'
+import displayNote from '@/components/displayNote.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,13 +37,18 @@ const router = createRouter({
     {
       path: '/home',
       name: 'home',
-      component: dashboard
+      component: dashboard,
+      children: [
+        {
+          path: '/createnote',
+          component: createNote
+        }
+      ]
     },
 
     {
-      path: '/createnote',
-      name: 'createnote',
-      component: createNote
+      path: '/displaynote',
+      component: displayNote
     },
 
     {
