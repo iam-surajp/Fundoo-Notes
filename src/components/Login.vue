@@ -35,6 +35,7 @@ export default {
               this.snackbar.color = 'success'
               this.snackbar.show = true
               console.log(response.data); 
+              this.$router.push('/home/getallnotes')
             } else {
               this.snackbar.message = 'Login failed'
               this.snackbar.color = 'error'

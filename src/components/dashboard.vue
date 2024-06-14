@@ -89,8 +89,7 @@ export default {
 
       <v-main>
         <v-container class="main-content">
-          <createNote />
-          <displayNote />
+          <RouterView />
         </v-container>
       </v-main>
     </v-container>

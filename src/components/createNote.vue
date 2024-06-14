@@ -1,8 +1,10 @@
 <script>
-import { createNote } from '../services/notesServices'
+import { createNoteServices } from '../services/notesServices'
+import Icon from './Icon.vue'
 
 export default {
   name: 'createNote',
+  components: { Icon },
   data: () => ({
     clicked: false,
     title: '',
@@ -15,7 +17,23 @@ export default {
         title: this.title,
         description: this.description
       }
-      createNote(reqData)
+      console.log(reqData)
+
+      if (reqData.title !== '' && reqData.description !== '') {
+        const token = localStorage.getItem('token')
+        console.log('Token is -------->', token)
+        createNoteServices(reqData, token)
+          .then((res) => {
+            console.log(res)
+            console.log('data is ---', res.data)
+            this.$emit('noteCreated', res.data)
+            this.$emit('refreshAgain', res.data)
+            this.clicked = false
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+      }
     }
   }
 }
@@ -54,16 +72,12 @@ export default {
     </v-textarea>
     <template v-if="clicked">
       <div style="display: flex; justify-content: space-between">
+        <div style="display: flex; max-width: 100%"><Icon /></div>
+
         <div>
-          <v-btn variant="text"><v-icon>mdi-bell-outline</v-icon></v-btn>
-          <v-btn variant="text"><v-icon>mdi-account-plus-outline</v-icon></v-btn>
-          <v-btn variant="text"><v-icon>mdi-palette</v-icon></v-btn>
-          <v-btn variant="text"><v-icon>mdi-image-outline</v-icon></v-btn>
-          <v-btn variant="text"><v-icon>mdi-archive-arrow-down-outline</v-icon></v-btn>
-          <v-btn variant="text"><v-icon>mdi-dots-vertical</v-icon></v-btn>
-        </div>
-        <div>
-          <v-btn class="close-btn" variant="text" @click="clicked = false">Close</v-btn>
+          <v-btn class="close-btn" variant="text" @click="submitNote(), (clicked = false)"
+            >Close</v-btn
+          >
         </div>
       </div>
     </template>
