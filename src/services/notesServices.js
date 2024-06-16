@@ -16,7 +16,9 @@ export const getAllNotesServices = (token) => {
   return get(`notes/getNotesList`, { headers })
 }
 
-export const deleteNoteServices = (reqData, token) => {
+export const deleteNoteServices = (reqData) => {
+  console.log('delete service======')
+  const token = localStorage.getItem('token')
   const headers = {
     'Content-Type': 'application/json',
     Authorization: token

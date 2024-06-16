@@ -1,4 +1,6 @@
 <script>
+import { resetPassword } from '@/services/UserServices';
+
 export default {
   data: () => ({
     valid: false,
@@ -34,9 +36,26 @@ export default {
           this.snackbar.color = 'error'
           this.snackbar.show = true
         } else{
-          this.snackbar.message = 'Password changed successfully!'
-          this.snackbar.color = 'success'
-          this.snackbar.show = true
+          
+          reqData = {
+            'newPassword': this.password
+          }
+          resetPassword(reqData)
+          .then(res=>{
+            console.log(res)
+            this.snackbar.message = 'Password changed successfully!'
+            this.snackbar.color = 'success'
+            this.snackbar.show = true
+            this.$router.push('login')
+          })
+          .catch(error=>{
+            console.log(error)
+            this.snackbar.message = 'Some error occured'
+            this.snackbar.color = 'error'
+            this.snackbar.show = true
+          })
+
+
         }
     },
   },
@@ -86,11 +105,12 @@ export default {
     </v-snackbar>
   </template>
 
-<style>
+<style scoped>
 
 .parent-div{
     position: relative;
     left: 300px;
+    top: 50px
 }
 
 .title-content{

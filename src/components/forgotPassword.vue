@@ -1,4 +1,6 @@
 <script>
+import { forgotPassword } from '@/services/UserServices';
+
 export default {
   data: () => ({
     valid:false,   
@@ -20,14 +22,23 @@ export default {
     },
     submitForm() {
       if (this.valid) {
-        this.snackbar.message = "The password reset link has been sent to your registered email."
-        this.snackbar.color = 'primary'
-        this.snackbar.show = true
-      } else {
-        this.snackbar.message = 'Some error occured'
-        this.snackbar.color = 'error'
-        this.snackbar.show = true
-      }
+        reqData = {
+          'email':this.email
+        }
+
+        forgotPassword(reqData)
+        .then(res=>{
+             console.log(res)
+             this.snackbar.message = "The password reset link has been sent to your registered email."
+             this.snackbar.color = 'primary'
+             this.snackbar.show = true
+        }).catch(error=>{
+          console.log(error)
+          this.snackbar.message = 'Some error occured'
+          this.snackbar.color = 'error'
+          this.snackbar.show = true
+        })
+      } 
     },
   },
 };
@@ -84,11 +95,12 @@ export default {
     </v-snackbar>
   </template>
 
-<style>
+<style scoped>
 
 .parent-div{
     position: relative;
     left: 300px;
+    top: 50px;
 }
 
 .title-content{

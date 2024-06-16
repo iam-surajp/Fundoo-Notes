@@ -32,3 +32,33 @@ export const signupUser = (reqData) => {
       throw error
     })
 }
+
+export const forgotPassword = (reqData) => {
+  const headerOptions = {
+    'Content-Type': 'application/json'
+  }
+  return post('user/reset', reqData, headerOptions)
+    .then((response) => {
+      console.log('Link to reset password sent on email', response)
+      return response
+    })
+    .catch((error) => {
+      console.error('Failed', error.message)
+      throw error
+    })
+}
+
+export const resetPassword = (reqData) => {
+  const headerOptions = {
+    'Content-Type': 'application/json'
+  }
+  return post('user/reset-password', reqData, headerOptions)
+    .then((response) => {
+      console.log('Password changed successfully', response)
+      return response
+    })
+    .catch((error) => {
+      console.error('Reset password failed', error.message)
+      throw error
+    })
+}

@@ -17,7 +17,8 @@ export default {
       { title: 'Archive', value: 'archive', icon: 'mdi-archive-arrow-down-outline' },
       { title: 'Trash', value: 'trash', icon: 'mdi-trash-can-outline' }
     ],
-    loading: false
+    loading: false,
+    selectedIndex: null
   }),
 
   watch: {
@@ -29,6 +30,10 @@ export default {
   methods: {
     onClick() {
       this.openRail = !this.openRail
+    },
+
+    selectItem(index) {
+      this.selectedIndex = index
     }
   }
 }
@@ -42,27 +47,36 @@ export default {
         <img src="../assets/keep.png" alt="Keep" />
         <v-toolbar-title>Keep</v-toolbar-title>
 
-        <v-card-text class="search">
+        <div class="search">
           <v-text-field
+            id="searchbar"
             prepend-inner-icon="mdi-magnify"
             density="compact"
-            label="Search"
+            placeholder="Search"
+            variant="solo"
             hide-details
-            single-line
+            single
+            line
             @click:append-inner="onClick"
           ></v-text-field>
-        </v-card-text>
+        </div>
 
         <v-spacer></v-spacer>
 
         <template v-if="$vuetify.display.mdAndUp">
-          <v-btn><img src="../assets/refresh.svg" alt="Refresh" /></v-btn>
-          <v-btn><img src="../assets/list_view.svg" alt="List View" /></v-btn>
+          <div style="display: flex">
+            <v-btn><img src="../assets/refresh.svg" alt="Refresh" /></v-btn>
+            <v-btn><img src="../assets/list_view.svg" alt="List View" /></v-btn>
+            <v-btn><img src="../assets/settings.svg" alt="Settings" /></v-btn>
+          </div>
         </template>
 
-        <v-btn><img src="../assets/settings.svg" alt="Settings" /></v-btn>
-        <v-btn><img src="../assets/apps_icon.svg" alt="Apps" /></v-btn>
-        <v-btn><img src="../assets/account_circle.svg" alt="Account" /></v-btn>
+        <div style="margin-left: 20px; display: flex">
+          <v-btn><img src="../assets/apps_icon.svg" alt="Apps" /></v-btn>
+          <v-avatar>
+            <v-img alt="John" width="15px" src="https://cdn.vuetifyjs.com/images/john.jpg"></v-img>
+          </v-avatar>
+        </div>
       </v-app-bar>
 
       <v-navigation-drawer
@@ -72,7 +86,13 @@ export default {
         :rail="openRail"
       >
         <v-list>
-          <v-list-item class="sidebar-items" v-for="(item, index) in items" :key="index">
+          <v-list-item
+            class="sidebar-items"
+            v-for="(item, index) in items"
+            :key="index"
+            :class="{ 'active-item': selectedIndex === index }"
+            @click="selectItem(index)"
+          >
             <template v-slot:prepend>
               <div style="display: flex">
                 <div>
@@ -101,8 +121,16 @@ export default {
   margin-left: 250px;
 }
 
+.sidebar-items {
+  border-radius: 50px;
+}
+
 .sidebar-items:hover {
   cursor: pointer;
+}
+
+.active-item {
+  background-color: #feefc3 !important;
 }
 
 .v-list-item:hover {
@@ -113,7 +141,10 @@ export default {
   background-color: transparent;
 }
 
-.v-card-text.search {
-  width: 30%;
+#searchbar {
+  height: 46px;
+  width: 700px;
+  border: none;
+  border-radius: 10px;
 }
 </style>

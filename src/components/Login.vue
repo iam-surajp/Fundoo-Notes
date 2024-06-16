@@ -120,6 +120,7 @@ export default {
   center;width: 100%;
   position: relative;
   left: 300px;
+  top: 50px
 }
 
 #google-img{

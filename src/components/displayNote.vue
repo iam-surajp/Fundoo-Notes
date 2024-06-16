@@ -1,5 +1,6 @@
 <script>
 import Icon from './Icon.vue'
+import updateDialog from './updateDialog.vue'
 
 export default {
   name: 'displayNote',
@@ -10,12 +11,33 @@ export default {
 
   data() {
     return {
-      hoveredCard: null
+      hoveredCard: null,
+      menuVisibleCard: null
     }
   },
 
   components: {
     Icon
+  },
+
+  methods: {
+    handleMenuStateChanged(noteId, isVisible) {
+      this.menuVisibleCard = isVisible ? noteId : null
+    },
+
+    handleClickOutside(event) {
+      if (this.menuVisibleCard !== null) {
+        this.menuVisibleCard = null
+        this.hoveredCard = null
+      }
+    }
+  },
+  mounted() {
+    document.addEventListener('click', this.handleClickOutside)
+  },
+
+  beforeDestroy() {
+    document.removeEventListener('click', this.handleClickOutside)
   }
 }
 </script>
@@ -34,7 +56,10 @@ export default {
           <div class="title">
             <div margin-right="60px">{{ note.title }}</div>
             <div min-height="30px">
-              <v-btn v-if="hoveredCard === note.id" size="30px" variant="text"
+              <v-btn
+                v-if="hoveredCard === note.id || menuVisibleCard === note.id"
+                size="30px"
+                variant="text"
                 ><v-icon>mdi-pin-outline</v-icon></v-btn
               >
             </div>
@@ -45,7 +70,9 @@ export default {
           {{ note.description }}
         </v-card-text>
         <div class="icons">
-          <div v-if="hoveredCard === note.id"><Icon /></div>
+          <div v-if="hoveredCard === note.id || menuVisibleCard === note.id">
+            <Icon @menuStateChanged="handleMenuStateChanged(note.id, $event)" :id="note.id" />
+          </div>
         </div>
       </v-card>
     </div>
@@ -68,14 +95,15 @@ export default {
 }
 
 .v-card.mx-auto {
-  box-shadow: 1px 1px 1px gray;
+  /* box-shadow: 1px 1px 1px gray; */
+  border: 1px solid rgb(203, 203, 203);
 }
 
 .text-content {
   display: flex;
   flex-wrap: wrap;
   width: 1200px;
-  gap: 5px;
+  /* gap: 3px; */
   position: relative;
   right: 300px;
   top: 25px;
@@ -84,8 +112,8 @@ export default {
 .txt-card {
   border-radius: 5px;
   padding: 10px;
-  margin: 10px;
-  width: 265px;
+  /* margin: 5px; */
+  width: 270px;
   height: fit-content;
   box-sizing: border-box;
 }

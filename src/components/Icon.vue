@@ -1,4 +1,6 @@
 <script>
+import { deleteNoteServices } from '@/services/notesServices'
+
 export default {
   name: 'Icon',
 
@@ -13,7 +15,43 @@ export default {
         { title: 'Copy to Google Docs' },
         { title: 'Version history' }
       ],
-      location: 'end'
+      location: 'end',
+      showMenu: false,
+      clicked: false,
+      noteList: []
+    }
+  },
+
+  props: {
+    id: String
+  },
+
+  emits: ['menuStateChanged'],
+
+  methods: {
+    toggleMenu(event) {
+      this.showMenu = !this.showMenu
+      this.$emit('menuStateChanged', this.showMenu)
+      event.stopPropagation()
+    },
+
+    trashFunction(title) {
+      console.log('hii there============')
+      console.log('title of item', title)
+      if (title === 'Delete note') {
+        console.log('title of item', title)
+        this.noteList = {
+          noteIdList: [this.id],
+          isDeleted: true
+        }
+        deleteNoteServices(this.noteList)
+          .then((res) => {
+            console.log(res)
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+      }
     }
   }
 }
@@ -28,11 +66,18 @@ export default {
 
   <v-menu :location="location">
     <template v-slot:activator="{ props }">
-      <v-btn class="btn" variant="text" v-bind="props"><v-icon>mdi-dots-vertical</v-icon></v-btn>
+      <v-btn class="btn" variant="text" @click.stop="toggleMenu" v-bind="props"
+        ><v-icon>mdi-dots-vertical</v-icon></v-btn
+      >
     </template>
 
     <v-list>
-      <v-list-item v-for="(item, index) in items" :key="index">
+      <v-list-item
+        v-for="(item, index) in items"
+        :key="index"
+        @click="trashFunction(item.title)"
+        @click.stop
+      >
         <v-list-item-title>{{ item.title }}</v-list-item-title>
       </v-list-item>
     </v-list>

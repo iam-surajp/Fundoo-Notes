@@ -196,11 +196,12 @@ export default {
   </div>
 </template>
 
-<style>
+<style scoped>
 .myclass {
   width: 800px;
   position: relative;
   left: 200px;
+  top: 50px;
 }
 
 .mydiv {
