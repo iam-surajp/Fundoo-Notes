@@ -1,5 +1,6 @@
 <script>
 import Icon from './Icon.vue'
+import UpdateDialog from './updateDialog.vue'
 import updateDialog from './updateDialog.vue'
 
 export default {
@@ -12,12 +13,14 @@ export default {
   data() {
     return {
       hoveredCard: null,
-      menuVisibleCard: null
+      menuVisibleCard: null,
+      showDialog: false
     }
   },
 
   components: {
-    Icon
+    Icon,
+    updateDialog
   },
 
   methods: {
@@ -32,6 +35,7 @@ export default {
       }
     }
   },
+
   mounted() {
     document.addEventListener('click', this.handleClickOutside)
   },
@@ -52,9 +56,9 @@ export default {
       @mouseleave="hoveredCard = null"
     >
       <v-card class="mx-auto" max-width="344" hover>
-        <v-card-item>
+        <v-card-item @click.stop="showDialog = true">
           <div class="title">
-            <div margin-right="60px">{{ note.title }}</div>
+            <v-card-text>{{ note.title }}</v-card-text>
             <div min-height="30px">
               <v-btn
                 v-if="hoveredCard === note.id || menuVisibleCard === note.id"
@@ -65,8 +69,9 @@ export default {
             </div>
           </div>
         </v-card-item>
+        <updateDialog :visible="showDialog" @close="showDialog = false" />
 
-        <v-card-text>
+        <v-card-text @click.stop="showDialog = true">
           {{ note.description }}
         </v-card-text>
         <div class="icons">
@@ -94,8 +99,12 @@ export default {
   width: 100%;
 }
 
+.v-card-item {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
 .v-card.mx-auto {
-  /* box-shadow: 1px 1px 1px gray; */
   border: 1px solid rgb(203, 203, 203);
 }
 
@@ -103,7 +112,6 @@ export default {
   display: flex;
   flex-wrap: wrap;
   width: 1200px;
-  /* gap: 3px; */
   position: relative;
   right: 300px;
   top: 25px;
@@ -112,7 +120,6 @@ export default {
 .txt-card {
   border-radius: 5px;
   padding: 10px;
-  /* margin: 5px; */
   width: 270px;
   height: fit-content;
   box-sizing: border-box;

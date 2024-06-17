@@ -6,7 +6,8 @@ import forgotPassword from '@/components/forgotPassword.vue'
 import dashboard from '@/components/dashboard.vue'
 import createNote from '@/components/createNote.vue'
 import displayNote from '@/components/displayNote.vue'
-import getAllNote from '@/components/getAllNotes.vue'
+import getAllNote from '@/components/displayAll.vue'
+import DisplayAll from '@/components/displayAll.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -49,8 +50,8 @@ const router = createRouter({
           component: displayNote
         },
         {
-          path: '/home/getallnotes',
-          component: getAllNote
+          path: '/home/displayall',
+          component: DisplayAll
         }
       ]
     },
