@@ -7,8 +7,9 @@ export default {
 
   data: () => ({
     dialog: false,
-    title: this.note ? this.note.title : '',
-    description: this.note ? this.note.description : ''
+    noteId: '',
+    title: '',
+    description: ''
   }),
 
   components: {
@@ -17,14 +18,15 @@ export default {
 
   methods: {
     submitUpdated() {
-      reqData = {
-        noteId: this.note.id,
+      const reqData = {
+        noteId: this.$props.note?.id,
         title: this.title,
         description: this.description
       }
+      console.log('data is ', reqData)
       updateNoteServices(reqData)
         .then((res) => {
-          console.log('Note updated successfully')
+          console.log('Note updated successfully', res)
           this.$emit('noteUpdated')
         })
         .catch((error) => {
@@ -33,6 +35,7 @@ export default {
         })
     }
   },
+  mounted() {},
 
   watch: {
     note: {

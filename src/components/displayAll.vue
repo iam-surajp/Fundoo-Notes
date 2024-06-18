@@ -35,8 +35,8 @@ export default {
       this.getAllNotes()
     },
 
-    updateNotes(updatedNotes) {
-      this.notes = updatedNotes
+    updateNotes() {
+      this.getAllNotes()
     }
   }
 }

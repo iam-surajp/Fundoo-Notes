@@ -35,3 +35,12 @@ export const updateNoteServices = (reqData) => {
   }
   return post(`notes/updateNotes`, reqData, { headers })
 }
+
+export const changeColorServices = (reqData) => {
+  const token = localStorage.getItem('token')
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: token
+  }
+  return post(`notes/changesColorNotes`, reqData, { headers })
+}

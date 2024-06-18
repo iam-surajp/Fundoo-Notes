@@ -15,7 +15,7 @@ export default {
       hoveredCard: null,
       menuVisibleCard: null,
       showDialog: false,
-      selectedNote: null,
+      d_note: {},
       filtered_notes: []
     }
   },
@@ -30,7 +30,7 @@ export default {
       this.menuVisibleCard = isVisible ? noteId : null
     },
 
-    handleClickOutside(event) {
+    handleClickOutside() {
       if (this.menuVisibleCard !== null) {
         this.menuVisibleCard = null
         this.hoveredCard = null
@@ -44,18 +44,8 @@ export default {
       )
     },
 
-    fetchNotes() {
-      getNotesServices()
-        .then((res) => {
-          this.$emit('update:notes', res.data.data)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    },
-
-    handleNoteUpdated(updatedNote) {
-      this.fetchNotes()
+    handleNoteUpdated() {
+      this.$emit('update:notes')
     },
 
     updateFilteredNotes() {
@@ -63,9 +53,17 @@ export default {
     },
 
     openDialog(note) {
-      this.selectedNote = note
-      console.log('selected note ==========', this.selectedNote)
+      this.d_note = { id: note.id, title: note.title, description: note.description }
+      console.log('d_note is---', this.d_note)
       this.showDialog = true
+    },
+
+    handleColorChanged({ id, color }) {
+      const note = this.notes.find((note) => note.id === id)
+      if (note) {
+        note.color = color
+        this.$emit('update:notes')
+      }
     }
   },
 
@@ -98,7 +96,12 @@ export default {
       @mouseover="hoveredCard = note.id"
       @mouseleave="hoveredCard = null"
     >
-      <v-card class="mx-auto" max-width="344" hover>
+      <v-card
+        class="mx-auto"
+        max-width="344"
+        hover
+        :style="{ backgroundColor: note.color || '#FFFFFF' }"
+      >
         <v-card-item>
           <div class="title" display="flex">
             <div @click.stop="openDialog(note)">
@@ -124,6 +127,7 @@ export default {
               @menuStateChanged="handleMenuStateChanged(note.id, $event)"
               :id="note.id"
               @noteDeleted="handleNoteDeleted"
+              @colorChanged="handleColorChanged"
             />
           </div>
         </div>
@@ -132,7 +136,7 @@ export default {
   </div>
   <updateDialog
     :visible="showDialog"
-    :note="selectedNote"
+    :note="d_note"
     @close="showDialog = false"
     @noteUpdated="handleNoteUpdated"
   />

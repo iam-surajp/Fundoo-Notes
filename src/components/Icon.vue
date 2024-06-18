@@ -1,5 +1,5 @@
 <script>
-import { deleteNoteServices } from '@/services/notesServices'
+import { deleteNoteServices, changeColorServices } from '@/services/notesServices'
 
 export default {
   name: 'Icon',
@@ -19,6 +19,7 @@ export default {
       showMenu: false,
       clicked: false,
       noteList: [],
+      color: null,
 
       colors: [
         { name: 'Default', clr: '#FFFFFF' },
@@ -41,7 +42,7 @@ export default {
     id: String
   },
 
-  emits: ['menuStateChanged', 'noteDeleted'],
+  emits: ['menuStateChanged', 'noteDeleted', 'colorChanged'],
 
   methods: {
     toggleMenu(event) {
@@ -68,6 +69,25 @@ export default {
             console.log(error)
           })
       }
+    },
+
+    selectColor(color) {
+      this.color = color
+      this.updateColor()
+    },
+
+    updateColor() {
+      const reqData = {
+        noteIdList: [this.id],
+        color: this.color.clr
+      }
+      changeColorServices(reqData)
+        .then((res) => {
+          this.$emit('colorChanged', { id: this.id, color: this.color.clr })
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     }
   }
 }
@@ -76,21 +96,21 @@ export default {
 <template>
   <v-btn class="btn" variant="text"><v-icon>mdi-bell-outline</v-icon></v-btn>
   <v-btn class="btn" variant="text"><v-icon>mdi-account-plus-outline</v-icon></v-btn>
-  <!-- <v-btn class="btn" variant="text"><v-icon>mdi-palette</v-icon></v-btn> -->
 
   <v-menu :location="location">
     <template v-slot:activator="{ props }">
-      <v-btn class="btn" variant="text" v-bind="props"><v-icon>mdi-palette</v-icon></v-btn>
+      <v-btn class="btn" variant="text" @click.stop="toggleMenu" v-bind="props"
+        ><v-icon>mdi-palette</v-icon></v-btn
+      >
     </template>
 
     <v-list class="colors-list">
-      <v-list-item v-for="(color, index) in colors" :key="index" @click.stop>
+      <v-list-item v-for="(color, index) in colors" :key="index" @click.stop="selectColor(color)">
         <v-list-item-title
           ><div
             id="color-chooser"
             :style="{
-              display: flex,
-              flexDirection: 'column',
+              display: 'flex',
               height: '30px',
               width: '30px',
               borderRadius: '50%',
@@ -135,5 +155,9 @@ export default {
 
 .v-icon {
   font-size: 10px;
+}
+
+.colors-list {
+  display: flex;
 }
 </style>
