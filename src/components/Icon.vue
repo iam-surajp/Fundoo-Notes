@@ -1,5 +1,9 @@
 <script>
-import { deleteNoteServices, changeColorServices } from '@/services/notesServices'
+import {
+  deleteNoteServices,
+  changeColorServices,
+  archiveNoteServices
+} from '@/services/notesServices'
 
 export default {
   name: 'Icon',
@@ -42,7 +46,7 @@ export default {
     id: String
   },
 
-  emits: ['menuStateChanged', 'noteDeleted', 'colorChanged'],
+  emits: ['menuStateChanged', 'noteDeleted', 'colorChanged', 'changeAlert'],
 
   methods: {
     toggleMenu(event) {
@@ -52,7 +56,6 @@ export default {
     },
 
     trashFunction(title) {
-      console.log('hii there============')
       console.log('title of item', title)
       if (title === 'Delete note') {
         console.log('title of item', title)
@@ -63,12 +66,27 @@ export default {
         deleteNoteServices(this.noteList)
           .then((res) => {
             console.log(res)
-            this.$emit('noteDeleted', this.id)
+            this.$emit('changeAlert')
           })
           .catch((error) => {
             console.log(error)
           })
       }
+    },
+
+    archiveFunc() {
+      const reqData = {
+        noteIdList: [this.id],
+        isArchived: true
+      }
+      archiveNoteServices(reqData)
+        .then((res) => {
+          console.log(res)
+          this.$emit('changeAlert')
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     },
 
     selectColor(color) {
@@ -110,10 +128,6 @@ export default {
           ><div
             id="color-chooser"
             :style="{
-              display: 'flex',
-              height: '30px',
-              width: '30px',
-              borderRadius: '50%',
               backgroundColor: color.clr
             }"
           ></div
@@ -123,7 +137,10 @@ export default {
   </v-menu>
 
   <v-btn class="btn" variant="text"><v-icon>mdi-image-outline</v-icon></v-btn>
-  <v-btn class="btn" variant="text"><v-icon>mdi-archive-arrow-down-outline</v-icon></v-btn>
+
+  <v-btn class="btn" variant="text" @click="archiveFunc"
+    ><v-icon>mdi-archive-arrow-down-outline</v-icon></v-btn
+  >
 
   <v-menu :location="location">
     <template v-slot:activator="{ props }">
@@ -146,6 +163,13 @@ export default {
 </template>
 
 <style>
+#color-chooser {
+  display: flex;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+
 .v-btn.btn {
   margin: 0;
   padding: 0;

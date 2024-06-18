@@ -7,7 +7,9 @@ import dashboard from '@/components/dashboard.vue'
 import createNote from '@/components/createNote.vue'
 import displayNote from '@/components/displayNote.vue'
 import getAllNote from '@/components/displayAll.vue'
-import DisplayAll from '@/components/displayAll.vue'
+import displayAll from '@/components/displayAll.vue'
+import archiveNotes from '@/components/archiveNote.vue'
+import trashNotes from '@/components/trashNotes.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,7 +53,15 @@ const router = createRouter({
         },
         {
           path: '/home/displayall',
-          component: DisplayAll
+          component: displayAll
+        },
+        {
+          path: '/home/archive',
+          component: archiveNotes
+        },
+        {
+          path: '/home/trash',
+          component: trashNotes
         }
       ]
     },

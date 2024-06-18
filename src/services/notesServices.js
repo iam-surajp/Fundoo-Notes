@@ -26,6 +26,15 @@ export const deleteNoteServices = (reqData) => {
   return post(`notes/trashNotes`, reqData, { headers })
 }
 
+export const getTrashNotesServices = () => {
+  const token = localStorage.getItem('token')
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: token
+  }
+  return get(`notes/getTrashNotesList`, { headers })
+}
+
 export const updateNoteServices = (reqData) => {
   console.log('update service======')
   const token = localStorage.getItem('token')
@@ -43,4 +52,22 @@ export const changeColorServices = (reqData) => {
     Authorization: token
   }
   return post(`notes/changesColorNotes`, reqData, { headers })
+}
+
+export const archiveNoteServices = (reqData) => {
+  const token = localStorage.getItem('token')
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: token
+  }
+  return post(`notes/archiveNotes`, reqData, { headers })
+}
+
+export const getArchiveNoteServices = () => {
+  const token = localStorage.getItem('token')
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: token
+  }
+  return get(`notes/getArchiveNotesList`, { headers })
 }

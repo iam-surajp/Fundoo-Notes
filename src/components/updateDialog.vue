@@ -3,6 +3,7 @@ import Icon from './Icon.vue'
 import { updateNoteServices } from '@/services/notesServices'
 
 export default {
+  name: 'updateDialog',
   props: { visible: Boolean, note: Object },
 
   data: () => ({

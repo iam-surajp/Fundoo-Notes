@@ -4,9 +4,10 @@ import displayNote from './displayNote.vue'
 import { getAllNotesServices } from '@/services/notesServices'
 
 export default {
-  name: 'getAllNotes',
+  name: 'displayAll',
   data: () => ({
-    notes: []
+    notes: [],
+    totalnotes: []
   }),
   components: {
     createNote,
@@ -25,7 +26,8 @@ export default {
         .then((response) => {
           console.log(response.data.data)
           this.notes = response.data.data.data.reverse()
-          console.log('Notes are =====', this.notes)
+          this.totalnotes = this.notes.filter((note) => !note.isDeleted && !note.isArchived)
+          console.log('Notes are =====', this.totalnotes)
         })
         .catch((error) => {
           console.error(error)
@@ -44,7 +46,7 @@ export default {
 
 <template>
   <createNote @noteCreated="getAllData" />
-  <displayNote :notes="notes" @update:notes="updateNotes" />
+  <displayNote :totalnotes="totalnotes" @update:notes="updateNotes" />
 </template>
 
 <style></style>

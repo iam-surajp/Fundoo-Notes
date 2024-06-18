@@ -1,13 +1,12 @@
 <script>
 import Icon from './Icon.vue'
-import UpdateDialog from './updateDialog.vue'
 import updateDialog from './updateDialog.vue'
 
 export default {
   name: 'displayNote',
 
   props: {
-    notes: Array
+    totalnotes: Array
   },
 
   data() {
@@ -15,8 +14,7 @@ export default {
       hoveredCard: null,
       menuVisibleCard: null,
       showDialog: false,
-      d_note: {},
-      filtered_notes: []
+      d_note: {}
     }
   },
 
@@ -37,20 +35,17 @@ export default {
       }
     },
 
-    handleNoteDeleted(noteId) {
-      this.$emit(
-        'update:notes',
-        this.notes.filter((note) => note.id !== noteId)
-      )
+    handleNoteChangeAlert() {
+      this.$emit('update:notes')
     },
 
     handleNoteUpdated() {
       this.$emit('update:notes')
     },
 
-    updateFilteredNotes() {
-      this.filtered_notes = this.notes.filter((note) => !note.isDeleted)
-    },
+    // updateFilteredNotes() {
+    //   this.filtered_notes = this.notes.filter((note) => !note.isDeleted && !note.isArchived)
+    // },
 
     openDialog(note) {
       this.d_note = { id: note.id, title: note.title, description: note.description }
@@ -59,7 +54,7 @@ export default {
     },
 
     handleColorChanged({ id, color }) {
-      const note = this.notes.find((note) => note.id === id)
+      const note = this.totalnotes.find((note) => note.id === id)
       if (note) {
         note.color = color
         this.$emit('update:notes')
@@ -67,18 +62,18 @@ export default {
     }
   },
 
-  watch: {
-    notes: {
-      handler() {
-        this.updateFilteredNotes()
-      },
-      immediate: true
-    }
-  },
+  // watch: {
+  //   notes: {
+  //     handler() {
+  //       this.updateFilteredNotes()
+  //     },
+  //     immediate: true
+  //   }
+  // },
 
   mounted() {
     document.addEventListener('click', this.handleClickOutside)
-    this.updateFilteredNotes()
+    // this.updateFilteredNotes()
   },
 
   beforeDestroy() {
@@ -91,7 +86,7 @@ export default {
   <div class="text-content">
     <div
       class="txt-card"
-      v-for="note in filtered_notes"
+      v-for="note in totalnotes"
       :key="note.id"
       @mouseover="hoveredCard = note.id"
       @mouseleave="hoveredCard = null"
@@ -126,7 +121,7 @@ export default {
             <Icon
               @menuStateChanged="handleMenuStateChanged(note.id, $event)"
               :id="note.id"
-              @noteDeleted="handleNoteDeleted"
+              @changeAlert="handleNoteChangeAlert"
               @colorChanged="handleColorChanged"
             />
           </div>

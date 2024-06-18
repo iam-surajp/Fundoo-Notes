@@ -32,8 +32,15 @@ export default {
       this.openRail = !this.openRail
     },
 
-    selectItem(index) {
+    selectItem(index, title) {
       this.selectedIndex = index
+      if (title === 'Notes') {
+        this.$router.push('/home/displayall')
+      } else if (title === 'Archive') {
+        this.$router.push('/home/archive')
+      } else if (title === 'Trash') {
+        this.$router.push('/home/trash')
+      }
     }
   }
 }
@@ -91,7 +98,7 @@ export default {
             v-for="(item, index) in items"
             :key="index"
             :class="{ 'active-item': selectedIndex === index }"
-            @click="selectItem(index)"
+            @click="selectItem(index, item.title)"
           >
             <template v-slot:prepend>
               <div style="display: flex">
