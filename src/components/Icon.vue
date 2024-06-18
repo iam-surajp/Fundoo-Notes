@@ -41,7 +41,7 @@ export default {
     id: String
   },
 
-  emits: ['menuStateChanged'],
+  emits: ['menuStateChanged', 'noteDeleted'],
 
   methods: {
     toggleMenu(event) {
@@ -62,6 +62,7 @@ export default {
         deleteNoteServices(this.noteList)
           .then((res) => {
             console.log(res)
+            this.$emit('noteDeleted', this.id)
           })
           .catch((error) => {
             console.log(error)

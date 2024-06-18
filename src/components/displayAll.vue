@@ -33,6 +33,10 @@ export default {
     },
     getAllData() {
       this.getAllNotes()
+    },
+
+    updateNotes(updatedNotes) {
+      this.notes = updatedNotes
     }
   }
 }
@@ -40,7 +44,7 @@ export default {
 
 <template>
   <createNote @noteCreated="getAllData" />
-  <displayNote :notes="notes" />
+  <displayNote :notes="notes" @update:notes="updateNotes" />
 </template>
 
 <style></style>

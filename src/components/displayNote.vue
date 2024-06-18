@@ -14,7 +14,9 @@ export default {
     return {
       hoveredCard: null,
       menuVisibleCard: null,
-      showDialog: false
+      showDialog: false,
+      selectedNote: null,
+      filtered_notes: []
     }
   },
 
@@ -33,11 +35,52 @@ export default {
         this.menuVisibleCard = null
         this.hoveredCard = null
       }
+    },
+
+    handleNoteDeleted(noteId) {
+      this.$emit(
+        'update:notes',
+        this.notes.filter((note) => note.id !== noteId)
+      )
+    },
+
+    fetchNotes() {
+      getNotesServices()
+        .then((res) => {
+          this.$emit('update:notes', res.data.data)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+
+    handleNoteUpdated(updatedNote) {
+      this.fetchNotes()
+    },
+
+    updateFilteredNotes() {
+      this.filtered_notes = this.notes.filter((note) => !note.isDeleted)
+    },
+
+    openDialog(note) {
+      this.selectedNote = note
+      console.log('selected note ==========', this.selectedNote)
+      this.showDialog = true
+    }
+  },
+
+  watch: {
+    notes: {
+      handler() {
+        this.updateFilteredNotes()
+      },
+      immediate: true
     }
   },
 
   mounted() {
     document.addEventListener('click', this.handleClickOutside)
+    this.updateFilteredNotes()
   },
 
   beforeDestroy() {
@@ -50,15 +93,17 @@ export default {
   <div class="text-content">
     <div
       class="txt-card"
-      v-for="note in notes"
+      v-for="note in filtered_notes"
       :key="note.id"
       @mouseover="hoveredCard = note.id"
       @mouseleave="hoveredCard = null"
     >
       <v-card class="mx-auto" max-width="344" hover>
-        <v-card-item @click.stop="showDialog = true">
-          <div class="title">
-            <v-card-text>{{ note.title }}</v-card-text>
+        <v-card-item>
+          <div class="title" display="flex">
+            <div @click.stop="openDialog(note)">
+              <v-card-text>{{ note.title }}</v-card-text>
+            </div>
             <div min-height="30px">
               <v-btn
                 v-if="hoveredCard === note.id || menuVisibleCard === note.id"
@@ -69,19 +114,28 @@ export default {
             </div>
           </div>
         </v-card-item>
-        <updateDialog :visible="showDialog" @close="showDialog = false" />
-
-        <v-card-text @click.stop="showDialog = true">
+        <v-card-text @click.stop="openDialog(note)">
           {{ note.description }}
         </v-card-text>
+
         <div class="icons">
           <div v-if="hoveredCard === note.id || menuVisibleCard === note.id">
-            <Icon @menuStateChanged="handleMenuStateChanged(note.id, $event)" :id="note.id" />
+            <Icon
+              @menuStateChanged="handleMenuStateChanged(note.id, $event)"
+              :id="note.id"
+              @noteDeleted="handleNoteDeleted"
+            />
           </div>
         </div>
       </v-card>
     </div>
   </div>
+  <updateDialog
+    :visible="showDialog"
+    :note="selectedNote"
+    @close="showDialog = false"
+    @noteUpdated="handleNoteUpdated"
+  />
 </template>
 
 <style>

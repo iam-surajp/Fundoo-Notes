@@ -25,3 +25,13 @@ export const deleteNoteServices = (reqData) => {
   }
   return post(`notes/trashNotes`, reqData, { headers })
 }
+
+export const updateNoteServices = (reqData) => {
+  console.log('update service======')
+  const token = localStorage.getItem('token')
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: token
+  }
+  return post(`notes/updateNotes`, reqData, { headers })
+}

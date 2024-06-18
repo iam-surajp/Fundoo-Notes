@@ -1,10 +1,51 @@
 <script>
+import Icon from './Icon.vue'
+import { updateNoteServices } from '@/services/notesServices'
+
 export default {
+  props: { visible: Boolean, note: Object },
+
   data: () => ({
-    dialog: false
+    dialog: false,
+    title: this.note ? this.note.title : '',
+    description: this.note ? this.note.description : ''
   }),
 
-  props: ['visible'],
+  components: {
+    Icon
+  },
+
+  methods: {
+    submitUpdated() {
+      reqData = {
+        noteId: this.note.id,
+        title: this.title,
+        description: this.description
+      }
+      updateNoteServices(reqData)
+        .then((res) => {
+          console.log('Note updated successfully')
+          this.$emit('noteUpdated')
+        })
+        .catch((error) => {
+          console.log(error)
+          console.log('Note updation failed')
+        })
+    }
+  },
+
+  watch: {
+    note: {
+      immediate: true,
+      handler(newVal) {
+        if (newVal) {
+          this.title = newVal.title
+          this.description = newVal.description
+        }
+      }
+    }
+  },
+
   computed: {
     show: {
       get() {
@@ -56,7 +97,13 @@ export default {
             <div style="display: flex; max-width: 100%"><Icon /></div>
 
             <div>
-              <v-btn class="close-btn" variant="text" @click.stop="show = false">Close</v-btn>
+              <v-btn
+                class="close-btn"
+                variant="text"
+                @click.stop="show = false"
+                @click="submitUpdated()"
+                >Close</v-btn
+              >
             </div>
           </div>
         </div>
