@@ -86,7 +86,7 @@ export default {
   </div>
 </template>
 
-<style>
+<style scoped>
 .create-card {
   box-shadow: 0px 1px 4px 1px gray;
   margin: 0;
@@ -116,9 +116,14 @@ export default {
 .v-btn.btn {
   background-color: transparent;
 }
-.v-text-field .v-input__details {
+/* .v-text-field .v-input__details {
   display: none !important;
   border: 2px solid red !important;
   height: 0px;
+} */
+.v-input__details {
+  border: 1px solid red !important;
+  /* display: none !important; */
+  /* min-height: 0px !important; */
 }
 </style>

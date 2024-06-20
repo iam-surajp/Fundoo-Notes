@@ -28,7 +28,7 @@ export default {
         'Use 8 or more characters, numbers & symbols'
     ],
     confirmPassword: '',
-    confirmPasswordRules: [(v) => !!v || 'Confirm password is required'],
+    confirmPasswordRules: [(v) => !!v || 'Required'],
     showPasswords: false,
     snackbar: {
       show: false,
@@ -90,122 +90,133 @@ export default {
 </script>
 
 <template>
-  <div class="outer" justify="center">
-    <v-card class="myclass">
-      <div class="mydiv" justify="center">
-        <v-form ref="form" v-model="valid">
-          <v-container>
-            <div class="title">
-              <img style="width: 60px" src="../assets/google.png" alt="img" />
-              <label style="font-size: 25px"> Create your Google Account </label><br />
-            </div>
-            <div class="inputsection">
-              <div class="name" style="display: flex; margin-bottom: 10px">
-                <v-text-field
-                  v-model="fname"
-                  color="primary"
-                  label="First name"
-                  variant="outlined"
-                  class="custom-class"
-                  :rules="fnameRules"
-                  width="195px"
-                ></v-text-field>
+  <div class="signup-container">
+    <div class="outer">
+      <v-card class="myclass">
+        <div class="mydiv" justify="center">
+          <v-form ref="form" v-model="valid">
+            <v-container>
+              <div class="title">
+                <img style="width: 60px" src="../assets/google.png" alt="img" />
+                <label style="font-size: 25px"> Create your Google Account </label><br />
+              </div>
+              <div class="inputsection">
+                <div class="name" style="display: flex; margin-bottom: 20px">
+                  <v-text-field
+                    v-model="fname"
+                    color="primary"
+                    label="First name"
+                    variant="outlined"
+                    class="custom-class"
+                    :rules="fnameRules"
+                    width="195px"
+                  ></v-text-field>
 
-                <v-text-field
-                  v-model="lname"
-                  color="primary"
-                  label="Last name"
-                  variant="outlined"
-                  class="custom-class"
-                  :rules="lnameRules"
-                  width="195px"
-                ></v-text-field>
-              </div>
-              <div>
-                <v-text-field
-                  v-model="email"
-                  color="primary"
-                  label="Email"
-                  variant="outlined"
-                  :rules="emailRules"
-                  width="400px"
-                ></v-text-field>
-              </div>
-              <br />
-              <div>
-                <a href="" style="color: rgb(41, 85, 217); font-size: 16px; font-weight: 500"
-                  >Use my current email address instead</a
-                >
-              </div>
-              <br />
-              <div class="password">
-                <v-text-field
-                  v-model="password"
-                  color="primary"
-                  label="Password"
-                  variant="outlined"
-                  class="custom-class"
-                  :rules="passwordRules"
-                  width="195px"
-                  :type="showPasswords ? 'text' : 'password'"
-                ></v-text-field>
-
-                <v-text-field
-                  v-model="confirmPassword"
-                  color="primary"
-                  label="Confirm password"
-                  variant="outlined"
-                  class="custom-class"
-                  :rules="confirmPasswordRules"
-                  width="195px"
-                  :type="showPasswords ? 'text' : 'password'"
-                  @click:append="showPasswords = !showPasswords"
-                ></v-text-field>
-              </div>
-              <div class="showpassword-div">
-                <v-checkbox label="Show password" v-model="showPasswords"></v-checkbox>
-              </div>
-
-              <div class="actions">
+                  <v-text-field
+                    v-model="lname"
+                    color="primary"
+                    label="Last name"
+                    variant="outlined"
+                    class="custom-class"
+                    :rules="lnameRules"
+                    width="195px"
+                  ></v-text-field>
+                </div>
                 <div>
-                  <RouterLink to="/login" style="color: rgb(41, 85, 217); font-weight: 600">
-                    Sign in instead
-                  </RouterLink>
+                  <v-text-field
+                    v-model="email"
+                    color="primary"
+                    label="Email"
+                    variant="outlined"
+                    :rules="emailRules"
+                    width="400px"
+                  ></v-text-field>
+                </div>
+                <br />
+                <div>
+                  <a id="a-tag">Use my current email address instead</a>
+                </div>
+                <br />
+                <div class="password">
+                  <v-text-field
+                    v-model="password"
+                    color="primary"
+                    label="Password"
+                    variant="outlined"
+                    class="custom-class"
+                    :rules="passwordRules"
+                    width="195px"
+                    :type="showPasswords ? 'text' : 'password'"
+                  ></v-text-field>
+
+                  <v-text-field
+                    v-model="confirmPassword"
+                    color="primary"
+                    label="Confirm password"
+                    variant="outlined"
+                    class="custom-class"
+                    :rules="confirmPasswordRules"
+                    width="195px"
+                    :type="showPasswords ? 'text' : 'password'"
+                    @click:append="showPasswords = !showPasswords"
+                  ></v-text-field>
+                </div>
+                <div class="showpassword-div">
+                  <v-checkbox label="Show password" v-model="showPasswords"></v-checkbox>
                 </div>
 
-                <div>
-                  <v-btn class="btn-signup" @click="submitForm()" :disabled="!valid">
-                    Sign Up
-                  </v-btn>
-                </div>
-              </div>
-              <br />
-            </div>
-          </v-container>
-        </v-form>
+                <div class="actions">
+                  <div>
+                    <RouterLink to="/login" style="color: rgb(41, 85, 217); font-weight: 600">
+                      Sign in instead
+                    </RouterLink>
+                  </div>
 
-        <div class="img-section">
-          <img src="../assets/google_create.jpeg" alt="google-img" />
+                  <div>
+                    <v-btn class="btn-signup" @click="submitForm()" :disabled="!valid">
+                      Sign Up
+                    </v-btn>
+                  </div>
+                </div>
+                <br />
+              </div>
+            </v-container>
+          </v-form>
+
+          <div class="img-section">
+            <img src="../assets/google_create.jpeg" alt="google-img" />
+          </div>
         </div>
-      </div>
-    </v-card>
-    <!-- Snackbar -->
-    <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout" :color="snackbar.color">
-      {{ snackbar.message }}
-    </v-snackbar>
+      </v-card>
+      <!-- Snackbar -->
+      <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout" :color="snackbar.color">
+        {{ snackbar.message }}
+      </v-snackbar>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.signup-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .myclass {
   width: 800px;
-  position: relative;
-  left: 200px;
-  top: 50px;
 }
 
 .mydiv {
   display: flex;
+}
+
+#a-tag {
+  color: rgb(41, 85, 217);
+  font-size: 16px;
+  font-weight: 500;
 }
 
 .custom-class {
@@ -219,8 +230,8 @@ export default {
 }
 
 .password {
-  display: flex;
-  justify-content: space-around;
+  display: flex !important;
+  justify-content: space-between;
 }
 
 button,

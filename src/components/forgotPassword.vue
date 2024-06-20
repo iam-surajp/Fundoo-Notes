@@ -22,7 +22,7 @@ export default {
     },
     submitForm() {
       if (this.valid) {
-        reqData = {
+        const reqData = {
           'email':this.email
         }
 

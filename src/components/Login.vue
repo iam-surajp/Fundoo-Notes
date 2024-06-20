@@ -30,12 +30,14 @@ export default {
         }
         loginUser(reqData)
         .then(response => {
+
+            localStorage.setItem('userid',response.data.userId)
             if (response && response.status >= 200 && response.status < 300) {
               this.snackbar.message = 'Login successfull!'
               this.snackbar.color = 'success'
               this.snackbar.show = true
               console.log(response.data); 
-              this.$router.push('/home/getallnotes')
+              this.$router.push('/home/displayall')
             } else {
               this.snackbar.message = 'Login failed'
               this.snackbar.color = 'error'
@@ -57,13 +59,15 @@ export default {
 </script>
 
 <template>
+ <div class="login-container">
+  <div class="login-div1">
   <div class="parent-div">
 
     <v-form  v-model="valid">
-    <v-card class="mx-auto pa-10 pb-4" elevation="8" width="600px" rounded="lg">
+      <v-card class="mx-auto pa-10 pb-4" elevation="8" width="600px" rounded="lg">
       <div id="google-img">
       <img width="100px" src="../assets/google.png"></img>
-    </div>
+      </div>
     <div style="font-size: 30px;margin-bottom: 20px">Sign In</div>
      
       <v-text-field
@@ -110,17 +114,39 @@ export default {
       {{ snackbar.message }}
     </v-snackbar>
   </div>
+</div>
+ </div>
+ 
+
 </template>
 
 <style scoped>
 
+.login-container{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-div1{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+
 .parent-div{
   display: flex;
-  justify-content:
-  center;width: 100%;
-  position: relative;
+  justify-content: center;
+  
+  /* width: 100%; */
+  /* position: relative;
   left: 300px;
-  top: 50px
+  top: 50px */
 }
 
 #google-img{
@@ -149,14 +175,27 @@ export default {
   color: rgb(41, 85, 217);
 }
 
+.v-text-field .v-input__details {
+    padding-inline: 16px ;
+    text-align: left !important;
+    display: flex;
+    flex-direction: row !important;
+    border: 1px solid black !important;
+}
+.v-input--horizontal {
+  
+    text-align: left !important;
+}
+
+
 @media screen and (max-width:600px){
   .parent-div{
     width: fit-content;
     left: 0;
   }
-
-
 }
-
+.v-messages__message {
+text-align: left !important;
+}
 
 </style>

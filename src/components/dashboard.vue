@@ -1,10 +1,11 @@
 <script>
 import createNote from './createNote.vue'
 import displayNote from './displayNote.vue'
+import labelDialog from './labelDialog.vue'
 
 export default {
   name: 'Dashboard',
-  components: { createNote, displayNote },
+  components: { createNote, displayNote, labelDialog },
 
   data: () => ({
     drawer: true,
@@ -18,7 +19,8 @@ export default {
       { title: 'Trash', value: 'trash', icon: 'mdi-trash-can-outline' }
     ],
     loading: false,
-    selectedIndex: null
+    selectedIndex: null,
+    showLabelDialog: false
   }),
 
   watch: {
@@ -40,7 +42,13 @@ export default {
         this.$router.push('/home/archive')
       } else if (title === 'Trash') {
         this.$router.push('/home/trash')
+      } else if (title === 'Edit Labels') {
+        this.openLabelDialog()
       }
+    },
+
+    openLabelDialog() {
+      this.showLabelDialog = true
     }
   }
 }
@@ -52,20 +60,21 @@ export default {
       <v-app-bar prominent>
         <v-app-bar-nav-icon @click="onClick"></v-app-bar-nav-icon>
         <img src="../assets/keep.png" alt="Keep" />
-        <v-toolbar-title>Keep</v-toolbar-title>
+        <v-toolbar-title>Fundoo Notes</v-toolbar-title>
 
         <div class="search">
-          <v-text-field
-            id="searchbar"
-            prepend-inner-icon="mdi-magnify"
-            density="compact"
-            placeholder="Search"
-            variant="solo"
-            hide-details
-            single
-            line
-            @click:append-inner="onClick"
-          ></v-text-field>
+          <v-responsive style="border-radius: 8px">
+            <v-text-field
+              id="searchbar"
+              class="custom-bg-gray"
+              prepend-inner-icon="mdi-magnify"
+              density="compact"
+              placeholder="Search"
+              variant="solo-filled"
+              hide-details
+              @click:append-inner="onClick"
+            ></v-text-field>
+          </v-responsive>
         </div>
 
         <v-spacer></v-spacer>
@@ -121,11 +130,16 @@ export default {
       </v-main>
     </v-container>
   </v-app>
+  <labelDialog :visible="showLabelDialog" @close="showLabelDialog = false" />
 </template>
 
 <style>
 .v-container.main-content {
-  margin-left: 250px;
+  margin-left: 200px;
+}
+
+.v-main {
+  padding-top: 30px !important;
 }
 
 .sidebar-items {
@@ -153,5 +167,12 @@ export default {
   width: 700px;
   border: none;
   border-radius: 10px;
+}
+
+element.style {
+  --v-layout-left: 0px;
+  --v-layout-right: 0px;
+  --v-layout-top: 40px !important;
+  --v-layout-bottom: 0px;
 }
 </style>

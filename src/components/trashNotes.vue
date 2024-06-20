@@ -36,7 +36,7 @@ export default {
 <template>
   <div>
     <div>
-      <displayNote :totalnotes="trash_notes" @update:notes="updateTrashNotes" />
+      <displayNote :totalnotes="trash_notes" @update:notes="getTrashNotes" />
     </div>
   </div>
 </template>

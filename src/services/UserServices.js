@@ -49,8 +49,10 @@ export const forgotPassword = (reqData) => {
 }
 
 export const resetPassword = (reqData) => {
+  const token = localStorage.getItem('token')
   const headerOptions = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: token
   }
   return post('user/reset-password', reqData, headerOptions)
     .then((response) => {

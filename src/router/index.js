@@ -6,7 +6,6 @@ import forgotPassword from '@/components/forgotPassword.vue'
 import dashboard from '@/components/dashboard.vue'
 import createNote from '@/components/createNote.vue'
 import displayNote from '@/components/displayNote.vue'
-import getAllNote from '@/components/displayAll.vue'
 import displayAll from '@/components/displayAll.vue'
 import archiveNotes from '@/components/archiveNote.vue'
 import trashNotes from '@/components/trashNotes.vue'
@@ -75,6 +74,17 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     }
   ]
+})
+
+router.beforeEach((to, from) => {
+  const tk = localStorage.getItem('token')
+  let isAuthenticated = false
+  if (tk) {
+    isAuthenticated = true
+  }
+  if (!isAuthenticated && to.name !== 'login') {
+    return { name: 'login' }
+  }
 })
 
 export default router

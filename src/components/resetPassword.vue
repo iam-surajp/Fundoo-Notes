@@ -37,7 +37,7 @@ export default {
           this.snackbar.show = true
         } else{
           
-          reqData = {
+          const reqData = {
             'newPassword': this.password
           }
           resetPassword(reqData)

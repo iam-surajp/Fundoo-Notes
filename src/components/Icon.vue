@@ -123,16 +123,16 @@ export default {
     </template>
 
     <v-list class="colors-list">
-      <v-list-item v-for="(color, index) in colors" :key="index" @click.stop="selectColor(color)">
-        <v-list-item-title
-          ><div
-            id="color-chooser"
-            :style="{
-              backgroundColor: color.clr
-            }"
-          ></div
-        ></v-list-item-title>
-      </v-list-item>
+      <div v-for="(color, index) in colors" :key="index" @click.stop="selectColor(color)">
+        <!-- <v-list-item-title> -->
+        <div
+          id="color-chooser"
+          :style="{
+            backgroundColor: color.clr
+          }"
+        ></div>
+        <!-- </v-list-item-title> -->
+      </div>
     </v-list>
   </v-menu>
 
@@ -162,12 +162,13 @@ export default {
   </v-menu>
 </template>
 
-<style>
+<style scoped>
 #color-chooser {
   display: flex;
-  height: 30px;
-  width: 30px;
+  height: 35px;
+  width: 35px;
   border-radius: 50%;
+  margin: 3px;
 }
 
 .v-btn.btn {
@@ -178,7 +179,7 @@ export default {
 }
 
 .v-icon {
-  font-size: 10px;
+  font-size: 20px;
 }
 
 .colors-list {

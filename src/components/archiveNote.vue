@@ -38,4 +38,4 @@ export default {
   </div>
 </template>
 
-<style></style>
+<style scoped></style>

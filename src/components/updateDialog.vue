@@ -19,6 +19,7 @@ export default {
 
   methods: {
     submitUpdated() {
+      console.log('dialog note;', this.note)
       const reqData = {
         noteId: this.$props.note?.id,
         title: this.title,
@@ -36,7 +37,9 @@ export default {
         })
     }
   },
-  mounted() {},
+  mounted() {
+    console.log(this.note)
+  },
 
   watch: {
     note: {
@@ -70,7 +73,7 @@ export default {
 
   <div class="pa-4 text-center">
     <v-dialog v-model="show" max-width="600px">
-      <v-card>
+      <v-card :style="{ backgroundColor: this.$props.note?.color }">
         <div class="create-card">
           <v-textarea
             class="create-txtarea"

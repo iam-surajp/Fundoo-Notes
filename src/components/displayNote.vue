@@ -43,12 +43,13 @@ export default {
       this.$emit('update:notes')
     },
 
-    // updateFilteredNotes() {
-    //   this.filtered_notes = this.notes.filter((note) => !note.isDeleted && !note.isArchived)
-    // },
-
     openDialog(note) {
-      this.d_note = { id: note.id, title: note.title, description: note.description }
+      this.d_note = {
+        id: note.id,
+        title: note.title,
+        description: note.description,
+        color: note.color
+      }
       console.log('d_note is---', this.d_note)
       this.showDialog = true
     },
@@ -62,18 +63,8 @@ export default {
     }
   },
 
-  // watch: {
-  //   notes: {
-  //     handler() {
-  //       this.updateFilteredNotes()
-  //     },
-  //     immediate: true
-  //   }
-  // },
-
   mounted() {
     document.addEventListener('click', this.handleClickOutside)
-    // this.updateFilteredNotes()
   },
 
   beforeDestroy() {
@@ -99,8 +90,10 @@ export default {
       >
         <v-card-item>
           <div class="title" display="flex">
-            <div @click.stop="openDialog(note)">
-              <v-card-text>{{ note.title }}</v-card-text>
+            <div class="note-title" @click.stop="openDialog(note)">
+              <v-card-text>
+                <pre><b>{{ note.title }}</b></pre>
+              </v-card-text>
             </div>
             <div min-height="30px">
               <v-btn
@@ -113,7 +106,7 @@ export default {
           </div>
         </v-card-item>
         <v-card-text @click.stop="openDialog(note)">
-          {{ note.description }}
+          <pre>{{ note.description }}</pre>
         </v-card-text>
 
         <div class="icons">
@@ -137,7 +130,16 @@ export default {
   />
 </template>
 
-<style>
+<style scoped>
+code,
+kbd,
+pre,
+samp {
+  font-family: Georgia, 'Times New Roman', Times, serif !important;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
 .icons {
   flex-wrap: nowrap;
   margin: 0;
@@ -150,6 +152,14 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
+}
+
+.note-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  max-height: calc(1.76em * 3);
 }
 
 .v-card-item {

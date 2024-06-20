@@ -49,4 +49,4 @@ export default {
   <displayNote :totalnotes="totalnotes" @update:notes="updateNotes" />
 </template>
 
-<style></style>
+<style scoped></style>
