@@ -2,6 +2,7 @@
 import createNote from './createNote.vue'
 import displayNote from './displayNote.vue'
 import labelDialog from './labelDialog.vue'
+import { getAllLabelsServices } from '@/services/noteLabelServices'
 
 export default {
   name: 'Dashboard',
@@ -20,7 +21,8 @@ export default {
     ],
     loading: false,
     selectedIndex: null,
-    showLabelDialog: false
+    showLabelDialog: false,
+    allLabels: []
   }),
 
   watch: {
@@ -36,6 +38,7 @@ export default {
 
     selectItem(index, title) {
       this.selectedIndex = index
+      console.log(index)
       if (title === 'Notes') {
         this.$router.push('/home/displayall')
       } else if (title === 'Archive') {
@@ -43,13 +46,58 @@ export default {
       } else if (title === 'Trash') {
         this.$router.push('/home/trash')
       } else if (title === 'Edit Labels') {
-        this.openLabelDialog()
+        if (this.selectedIndex !== 0) {
+          this.openLabelDialog()
+        }
+
+        getAllLabelsServices()
+          .then((result) => {
+            console.log(result)
+            this.allLabels = result.data.data.details
+
+            this.navigationLabels(this.allLabels)
+          })
+          .catch((error) => {
+            console.log(error)
+          })
       }
+    },
+
+    getAllLables() {
+      getAllLabelsServices()
+        .then((result) => {
+          console.log(result)
+          this.allLabels = result.data.data.details
+          return this.allLabels
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     },
 
     openLabelDialog() {
       this.showLabelDialog = true
+    },
+
+    navigationLabels(allLabels) {
+      this.items = [
+        { title: 'Notes', value: 'notes', icon: 'mdi-lightbulb-outline' },
+        { title: 'Reminders', value: 'reminders', icon: 'mdi-bell-outline' },
+        { title: 'Edit Labels', value: 'edit_labels', icon: 'mdi-pencil-outline' },
+        { title: 'Archive', value: 'archive', icon: 'mdi-archive-arrow-down-outline' },
+        { title: 'Trash', value: 'trash', icon: 'mdi-trash-can-outline' }
+      ]
+      const labels = allLabels.map((label) => ({
+        title: label.label,
+        value: label.label,
+        icon: 'mdi-label-outline'
+      }))
+      this.items.splice(2, 0, ...labels)
     }
+  },
+
+  mounted() {
+    this.selectItem(0, 'Edit Labels')
   }
 }
 </script>
@@ -130,7 +178,12 @@ export default {
       </v-main>
     </v-container>
   </v-app>
-  <labelDialog :visible="showLabelDialog" @close="showLabelDialog = false" />
+  <labelDialog
+    :visible="showLabelDialog"
+    @close="showLabelDialog = false"
+    :items="this.allLabels"
+    @add:label="getAllLables()"
+  />
 </template>
 
 <style>

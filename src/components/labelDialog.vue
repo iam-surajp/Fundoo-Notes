@@ -1,16 +1,21 @@
 <script>
-import { createLabelServices } from '@/services/noteLabelServices'
+import {
+  createLabelServices,
+  deleteLabelServices,
+  getAllLabelsServices,
+  updateLabelServices
+} from '@/services/noteLabelServices'
+import { deleteNoteServices } from '@/services/notesServices'
 
 export default {
   name: 'labelDialog',
-  props: { visible: Boolean },
+  props: { visible: Boolean, items: Array },
 
   data: () => ({
     dialog: false,
     label: null,
     clicked: false,
-    hovered: false,
-    items: null
+    hovered: false
   }),
 
   methods: {
@@ -26,13 +31,40 @@ export default {
         createLabelServices(reqData)
           .then((response) => {
             console.log(response)
-            this.items = response.data
-            console.log('items are', this.items)
+            this.$emit('add:label')
           })
           .catch((error) => {
             console.log(error)
           })
       }
+      this.clicked = false
+      this.label = ''
+    },
+
+    updateLabel(labelId, labelName) {
+      const userid = localStorage.getItem('userid')
+      const reqData = {
+        label: labelName,
+        userId: userid
+      }
+      console.log(reqData)
+      updateLabelServices(reqData, labelId)
+        .then((res) => {
+          console.log(res)
+        })
+        .then((error) => {
+          console.log(error)
+        })
+    },
+
+    deleteLabel(labelId) {
+      deleteLabelServices(labelId)
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     }
   },
 
@@ -54,7 +86,7 @@ export default {
 <template>
   <div id="label-container" class="pa-4 text-center">
     <v-dialog v-model="show" max-width="300px">
-      <v-card style="padding: 20px">
+      <v-card>
         <div class="scrollable-div">
           <div><h5>Edit Labels</h5></div>
           <div class="create-label">
@@ -75,7 +107,7 @@ export default {
             </div>
 
             <div>
-              <v-icon v-if="clicked == false">mdi-check</v-icon>
+              <v-icon v-if="clicked == false" @click="submitLabel()">mdi-check</v-icon>
             </div>
           </div>
 
@@ -83,24 +115,20 @@ export default {
             class="create-label"
             @mouseover="hovered = true"
             @mouseleave="hovered = false"
-            v-for="(item, index) in items"
+            v-for="(item, index) in this.items"
             :key="index"
           >
             <div>
-              <v-icon v-if="hovered">mdi-delete</v-icon>
+              <v-icon v-if="hovered" @click="deleteLabel(item.id)">mdi-delete</v-icon>
               <v-icon v-else>mdi-label</v-icon>
             </div>
             <div>
-              <v-text-field
-                class="createlabel-txtfield"
-                placeholder="Label1"
-                variant="plain"
-                model-value="{{item.label}}"
-              >
+              <v-text-field class="createlabel-txtfield" variant="plain" v-model="item.label">
               </v-text-field>
             </div>
             <div>
-              <v-icon>mdi-pencil</v-icon>
+              <v-icon @click="updateLabel(item.id, item.label)">mdi-pencil</v-icon>
+              <!-- <v-icon>mdi-pencil</v-icon> -->
             </div>
           </div>
         </div>
@@ -121,6 +149,16 @@ export default {
 .scrollable-div {
   max-height: 500px;
   overflow-y: auto;
+}
+
+.scrollable-div[data-v-263c9ea7] {
+  max-height: 500px;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.create-label[data-v-263c9ea7] {
+  height: 50px;
 }
 
 #label-container {
