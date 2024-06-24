@@ -35,3 +35,11 @@ export const deleteLabelServices = (id) => {
   console.log(id)
   return Delete(`noteLabels/${id}/deleteNoteLabel`, { headers })
 }
+
+export const getNoteLabelsServices = (id) => {
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: token
+  }
+  return get(`notes/${id}/noteLabels`, { headers })
+}

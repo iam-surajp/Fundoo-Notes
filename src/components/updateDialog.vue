@@ -118,3 +118,9 @@ export default {
     </v-dialog>
   </div>
 </template>
+
+<style scoped>
+.create-card {
+  margin-left: 10px;
+}
+</style>

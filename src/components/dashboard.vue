@@ -183,10 +183,17 @@ export default {
     @close="showLabelDialog = false"
     :items="this.allLabels"
     @add:label="getAllLables()"
+    @update:label="getAllLables()"
+    @delete:label="getAllLables()"
   />
 </template>
 
 <style>
+.v-text-field .v-input__details {
+  /* padding-inline: 16px; */
+  display: none !important;
+}
+
 .v-container.main-content {
   margin-left: 200px;
 }

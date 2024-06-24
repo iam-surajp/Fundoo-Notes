@@ -108,6 +108,9 @@ export default {
         <v-card-text @click.stop="openDialog(note)">
           <pre>{{ note.description }}</pre>
         </v-card-text>
+        <v-card-text>
+          <div class="labeltitle">abcd</div>
+        </v-card-text>
 
         <div class="icons">
           <div v-if="hoveredCard === note.id || menuVisibleCard === note.id">
@@ -131,6 +134,14 @@ export default {
 </template>
 
 <style scoped>
+.labeltitle {
+  background-color: rgba(0, 0, 0, 0.1);
+  display: inline-block;
+  padding: 2px 5px 2px 5px;
+  border-radius: 20px;
+  font-size: smaller;
+}
+
 code,
 kbd,
 pre,

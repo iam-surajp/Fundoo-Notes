@@ -51,6 +51,7 @@ export default {
       updateLabelServices(reqData, labelId)
         .then((res) => {
           console.log(res)
+          this.$emit('update:label')
         })
         .then((error) => {
           console.log(error)
@@ -61,6 +62,7 @@ export default {
       deleteLabelServices(labelId)
         .then((res) => {
           console.log(res)
+          this.$emit('delete:label')
         })
         .catch((error) => {
           console.log(error)
