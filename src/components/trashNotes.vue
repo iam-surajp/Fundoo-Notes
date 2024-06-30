@@ -9,7 +9,8 @@ export default {
   },
   data() {
     return {
-      trash_notes: []
+      trash_notes: [],
+      delete_icons: true
     }
   },
   created() {
@@ -36,7 +37,12 @@ export default {
 <template>
   <div>
     <div>
-      <displayNote :totalnotes="trash_notes" @update:notes="getTrashNotes" />
+      <displayNote
+        :totalnotes="trash_notes"
+        @update:notes="getTrashNotes"
+        :delete_icons="delete_icons"
+        :archive_icons="false"
+      />
     </div>
   </div>
 </template>

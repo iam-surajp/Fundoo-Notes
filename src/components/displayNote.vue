@@ -1,12 +1,15 @@
 <script>
 import Icon from './Icon.vue'
 import updateDialog from './updateDialog.vue'
+import { getNoteLabelsServices } from '@/services/noteLabelServices'
 
 export default {
   name: 'displayNote',
 
   props: {
-    totalnotes: Array
+    totalnotes: Array,
+    archive_icons: Boolean,
+    delete_icons: Boolean
   },
 
   data() {
@@ -108,8 +111,10 @@ export default {
         <v-card-text @click.stop="openDialog(note)">
           <pre>{{ note.description }}</pre>
         </v-card-text>
-        <v-card-text>
-          <div class="labeltitle">abcd</div>
+        <v-card-text class="n-label-display">
+          <div v-for="label in note.noteLabels">
+            <div class="labeltitle">{{ label.label }}</div>
+          </div>
         </v-card-text>
 
         <div class="icons">
@@ -119,6 +124,8 @@ export default {
               :id="note.id"
               @changeAlert="handleNoteChangeAlert"
               @colorChanged="handleColorChanged"
+              :archive_icons="archive_icons"
+              :delete_icons="delete_icons"
             />
           </div>
         </div>
@@ -197,5 +204,12 @@ samp {
   width: 270px;
   height: fit-content;
   box-sizing: border-box;
+}
+
+.n-label-display {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 5px;
 }
 </style>

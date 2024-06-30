@@ -43,3 +43,11 @@ export const getNoteLabelsServices = (id) => {
   }
   return get(`notes/${id}/noteLabels`, { headers })
 }
+
+export const createNoteLabelsServices = (noteid, labelid) => {
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: token
+  }
+  return post(`notes/${noteid}/addLabelToNotes/${labelid}/add`, { headers })
+}

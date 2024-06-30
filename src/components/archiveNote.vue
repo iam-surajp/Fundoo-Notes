@@ -33,7 +33,12 @@ export default {
 <template>
   <div>
     <div>
-      <displayNote :totalnotes="archive_notes" />
+      <displayNote
+        :totalnotes="archive_notes"
+        :archive_icons="true"
+        :delete_icons="false"
+        @update:notes="getArchiveNotes()"
+      />
     </div>
   </div>
 </template>

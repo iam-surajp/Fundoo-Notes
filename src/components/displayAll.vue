@@ -46,7 +46,12 @@ export default {
 
 <template>
   <createNote @noteCreated="getAllData" />
-  <displayNote :totalnotes="totalnotes" @update:notes="updateNotes" />
+  <displayNote
+    :totalnotes="totalnotes"
+    @update:notes="updateNotes"
+    :delete_icons="false"
+    :archive_icons="false"
+  />
 </template>
 
 <style scoped></style>
