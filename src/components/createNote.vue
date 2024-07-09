@@ -116,14 +116,32 @@ export default {
 .v-btn.btn {
   background-color: transparent;
 }
-/* .v-text-field .v-input__details {
-  display: none !important;
-  border: 2px solid red !important;
-  height: 0px;
-} */
-.v-input__details {
-  border: 1px solid red !important;
-  /* display: none !important; */
-  /* min-height: 0px !important; */
+
+/* Media Queries */
+@media (max-width: 1200px) {
+  .create-card {
+    width: 500px;
+  }
+}
+
+@media (max-width: 992px) {
+  .create-card {
+    width: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .create-card {
+    width: 400px;
+  }
+}
+
+@media (max-width: 576px) {
+  .create-card {
+    width: 100%;
+    justify-content: flex-start;
+    position: relative;
+    left: -100px;
+  }
 }
 </style>

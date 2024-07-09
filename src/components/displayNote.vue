@@ -192,7 +192,7 @@ samp {
 .text-content {
   display: flex;
   flex-wrap: wrap;
-  width: 1200px;
+  width: 100%;
   position: relative;
   right: 300px;
   top: 25px;
@@ -211,5 +211,45 @@ samp {
   flex-wrap: wrap;
   width: 100%;
   gap: 5px;
+}
+
+/* Media Queries */
+@media (max-width: 1200px) {
+  .text-content {
+    padding: 25px 100px 0;
+  }
+  .txt-card {
+    width: 33.33%;
+  }
+}
+
+@media (max-width: 992px) {
+  .text-content {
+    padding: 25px 50px 0;
+    margin-left: 100px;
+  }
+  .txt-card {
+    width: 50%;
+  }
+}
+
+@media (max-width: 768px) {
+  .text-content {
+    padding: 25px 25px 0;
+  }
+  .txt-card {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .text-content {
+    padding: 10px;
+    margin-left: 200px;
+  }
+  .txt-card {
+    width: 100%;
+    padding: 5px;
+  }
 }
 </style>
